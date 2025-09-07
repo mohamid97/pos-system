@@ -9,9 +9,11 @@ use  App\Traits\HandelImages;
 
 class CategoryService
 {
+ 
     use HandelImages;
     public function create(array $data): Category
     {
+        $data['is_active'] = $this->cheackActive($data);
         if (isset($data['image']) && $data['image'] instanceof UploadedFile) {
             $data['image'] = $this->handleImageUpload($data['image'] , 'categories');
         }
@@ -20,6 +22,13 @@ class CategoryService
 
     public function update(Category $category, array $data): Category
     {
+        $data['is_active'] = $this->cheackActive($data);
+        if (isset($data['image']) && $data['image'] instanceof UploadedFile) {    
+            $data['image'] = $this->handleImageUpload($data['image'], 'categories');
+        } else {
+            $data['image'] = $category->image;
+        }
+        
         $category->update($data);
         return $category->fresh();
     }
@@ -27,6 +36,15 @@ class CategoryService
     public function delete(Category $category): bool
     {
         return $category->delete();
+    }
+
+
+    public function cheackActive(array &$data)
+    {
+        if (!isset($data['is_active'])) {
+            return 0;
+        }
+        return 1;
     }
 
 

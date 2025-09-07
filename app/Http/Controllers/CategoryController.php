@@ -33,7 +33,6 @@ class CategoryController extends Controller
         try{
             $this->service->create($request->validated());
             return redirect()->route('categories.index')->with('success', 'Category created successfully.');
-
         }catch (\Exception $e) {
             return back()->withInput()->with('error', 'Error creating product: ' . $e->getMessage());
         }
@@ -46,15 +45,15 @@ class CategoryController extends Controller
     }
 
     public function update(CategoryRequest $request, Category $category)
-    {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255|unique:categories,name,' . $category->id,
-            'description' => 'nullable|string',
-            'is_active' => 'boolean'
-        ]);
-        $validated['is_active'] = $request->has('is_active');
-        $this->service->update($category, $validated);
-        return redirect()->route('categories.index')->with('success', 'Category updated successfully.');
+    { 
+     
+       try{
+            $this->service->update($category, $request->validated());
+            return redirect()->route('categories.index')->with('success', 'Category updated successfully.');
+        }catch (\Exception $e) {
+            return back()->withInput()->with('error', 'Error Updating product: ' . $e->getMessage());
+        }
+
     }
 
     public function destroy(Category $category)
@@ -62,4 +61,6 @@ class CategoryController extends Controller
         $this->service->delete($category);
         return redirect()->route('categories.index')->with('success', 'Category deleted successfully.');
     }
+
+    
 }

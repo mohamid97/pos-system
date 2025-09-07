@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class CategoryRequest extends FormRequest
 {
@@ -21,8 +22,10 @@ class CategoryRequest extends FormRequest
      */
     public function rules(): array
     {
+        $categoryId = $this->route('category') ? $this->route('category')->id : null;
+
         return [
-            'name' => 'required|string|max:255',
+            'name' => ['required','string','max:255',Rule::unique('categories')->ignore($categoryId)],
             'description' => 'nullable|string',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'is_active' => 'boolean'
@@ -37,6 +40,7 @@ class CategoryRequest extends FormRequest
             'name.required' => 'Category name is required.',
             'name.string' => 'Category name must be a valid string.',
             'name.max' => 'Category name cannot exceed 255 characters.',
+            'name.unique' => 'This category name already exists.',
             'image.image' => 'The file must be an image.',
             'image.mimes' => 'Image must be jpeg, png, jpg, or gif format.',
             'image.max' => 'Image size cannot exceed 2MB.'
