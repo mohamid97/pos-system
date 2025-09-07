@@ -19,7 +19,7 @@ class ProductController extends Controller
 
     public function index(Request $request)
     {
-        $query = Product::with('category')->where('is_active', true);
+        $query = Product::with('category');
 
         if ($request->has('search')) {
             $search = $request->get('search');
@@ -34,7 +34,7 @@ class ProductController extends Controller
         }
 
         $products = $query->paginate(15);
-        $categories = Category::where('is_active', true)->get();
+        $categories = Category::get();
 
         return view('products.index', compact('products', 'categories'));
     }
@@ -46,7 +46,7 @@ class ProductController extends Controller
     }
 
     public function store(ProductRequest $request)
-    {
+    { 
         try {
             $this->productService->create($request->validated());
             return redirect()->route('products.index')->with('success', 'Product created successfully!');

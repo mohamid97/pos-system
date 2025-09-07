@@ -32,10 +32,11 @@ class ProductRequest extends FormRequest
                 'max:100',
                 Rule::unique('products', 'sku')->ignore($productId)
             ],
-            'description' => 'nullable|string',
+            'description' => 'nullable|string|max:5000',
             'price' => 'required|numeric|min:0',
-            'cost_price' => 'nullable|numeric|min:0',
+            'price' => 'nullable|numeric|min:0',
             'stock_quantity' => 'required|integer|min:0',
+            'cost_price'=>'required|numeric|min:0',
             'min_stock_level' => 'required|integer|min:0',
             'barcode' => [
                 'nullable',

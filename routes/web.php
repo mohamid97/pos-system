@@ -13,7 +13,8 @@ Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 
 // POS
 Route::get('/pos', [POSController::class, 'index'])->name('pos.index');
-Route::post('/pos/process', [POSController::class, 'process'])->name('pos.process');
+Route::post('/pos/process', [POSController::class, 'processSale'])->name('pos.process');
+Route::post('/pos/receipt', [POSController::class, 'processSale'])->name('pos.receipt');
 
 // Products
 Route::get('/products', [ProductController::class, 'index'])->name('products.index');
@@ -34,6 +35,7 @@ Route::delete('/customers/{customer}', [CustomerController::class, 'destroy'])->
 // Sales
 Route::get('/sales', [SaleController::class, 'index'])->name('sales.index');
 Route::get('/sales/{sale}', [SaleController::class, 'show'])->name('sales.show');
+Route::get('/sales/{sale}/cancel', [SaleController::class, 'cancel'])->name('sales.cancel');
 
 // Categories
 Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');

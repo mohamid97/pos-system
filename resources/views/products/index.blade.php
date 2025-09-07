@@ -10,9 +10,7 @@
     </a>
 </div>
 
-@if(session('success'))
-    <div class="alert alert-success">{{ session('success') }}</div>
-@endif
+
 
 <div class="card">
     <div class="card-body p-0">
@@ -25,6 +23,7 @@
                         <th>SKU</th>
                         <th>Category</th>
                         <th>Price</th>
+                        <th>Cost Price</th>
                         <th>Stock</th>
                         <th>Status</th>
                         <th class="text-end">Actions</th>
@@ -41,7 +40,8 @@
                         <td>{{ $product->sku }}</td>
                         <td>{{ $product->category->name ?? 'N/A' }}</td>
                         <td>${{ number_format($product->price, 2) }}</td>
-                        <td>{{ $product->stock }}</td>
+                        <td>${{ number_format($product->cost_price, 2) }}</td>
+                        <td>{{ $product->min_stock_level }}</td>
                         <td>
                             @if($product->is_active)
                                 <span class="badge bg-success">Active</span>

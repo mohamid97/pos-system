@@ -37,14 +37,14 @@ class CustomerController extends Controller
         return redirect()->route('customers.index')->with('success', 'Customer created successfully!');
     }
 
-    public function show(Customer $customer)
-    {
-        $customer->load(['sales' => function ($query) {
-            $query->where('status', 'completed')->orderBy('completed_at', 'desc')->limit(10);
-        }]);
+    // public function show(Customer $customer)
+    // {
+    //     $customer->load(['sales' => function ($query) {
+    //         $query->where('status', 'completed')->orderBy('completed_at', 'desc')->limit(10);
+    //     }]);
 
-        return view('customers.show', compact('customer'));
-    }
+    //     return view('customers.index', compact('customer'));
+    // }
 
     public function edit(Customer $customer)
     {

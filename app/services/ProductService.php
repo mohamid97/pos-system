@@ -13,10 +13,10 @@ class ProductService
     use HandelImages;
     public function create(array $data): Product
     {
+        $data['is_active'] = $this->chekActive($data);
         if (isset($data['image']) && $data['image'] instanceof UploadedFile) {
             $data['image'] = $this->handleImageUpload($data['image'] , 'products');
         }
-
         // Generate SKU if not provided
         if (!isset($data['sku']) || empty($data['sku'])) {
             $data['sku'] = $this->generateSku($data['name'], $data['category_id']);
@@ -27,8 +27,8 @@ class ProductService
 
     public function update(Product $product, array $data): Product
     {
+        $data['is_active'] = $this->chekActive($data);
         if (isset($data['image']) && $data['image'] instanceof UploadedFile) {
-            // Delete old image
             if ($product->image) {
                 Storage::disk('public')->delete($product->image);
             }
@@ -71,4 +71,14 @@ class ProductService
                      })
                      ->get();
     }
+
+    private function chekActive(array $data): bool
+    {
+        return isset($data['is_active']) ? 1 : 0;
+    }
+
+
+
+
+
 }
