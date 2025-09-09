@@ -4,8 +4,8 @@ namespace App\Services;
 
 use App\Models\Category;
 use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\Storage;
 use  App\Traits\HandelImages;
+use Illuminate\Database\Eloquent\Builder;
 
 class CategoryService
 {
@@ -45,6 +45,11 @@ class CategoryService
             return 0;
         }
         return 1;
+    }
+
+    public function applySearch(Builder $query, string $search): Builder
+    {
+        return $query->where('name', 'like', "%{$search}%");
     }
 
 

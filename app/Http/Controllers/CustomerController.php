@@ -34,17 +34,9 @@ class CustomerController extends Controller
     public function store(CustomerRequest $request)
     {
         Customer::create($request->validated());
-        return redirect()->route('customers.index')->with('success', 'Customer created successfully!');
+        return redirect()->route('customers.index')->with('success', __('main.store_success', ['model' => class_basename(Customer::class)]));
     }
 
-    // public function show(Customer $customer)
-    // {
-    //     $customer->load(['sales' => function ($query) {
-    //         $query->where('status', 'completed')->orderBy('completed_at', 'desc')->limit(10);
-    //     }]);
-
-    //     return view('customers.index', compact('customer'));
-    // }
 
     public function edit(Customer $customer)
     {
@@ -54,17 +46,17 @@ class CustomerController extends Controller
     public function update(CustomerRequest $request, Customer $customer)
     {
         $customer->update($request->validated());
-        return redirect()->route('customers.index')->with('success', 'Customer updated successfully!');
+        return redirect()->route('customers.index')->with('success', __('main.update_success', ['model' => class_basename(Customer::class)]));
     }
 
     public function destroy(Customer $customer)
     {
         if ($customer->sales()->exists()) {
-            return back()->with('error', 'Cannot delete customer with existing sales.');
+            return back()->with('error', __('main.cant_delete_customer_sales'));
         }
 
         $customer->delete();
-        return redirect()->route('customers.index')->with('success', 'Customer deleted successfully!');
+        return redirect()->route('customers.index')->with('success', __('main.delete_success', ['model' => class_basename(Customer::class)]));
     }
 
 

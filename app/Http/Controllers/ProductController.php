@@ -20,20 +20,11 @@ class ProductController extends Controller
     public function index(Request $request)
     {
         $query = Product::with('category');
-
+        $filters = $request->only('search' , 'category' , 'status');
         if ($request->has('search')) {
-            $search = $request->get('search');
-            $query->where(function ($q) use ($search) {
-                $q->where('name', 'like', "%{$search}%")
-                  ->orWhere('sku', 'like', "%{$search}%");
-            });
+            $query = $this->productService->applyFilter($query , $filters);
         }
-
-        if ($request->has('category') && $request->get('category') !== '') {
-            $query->where('category_id', $request->get('category'));
-        }
-
-        $products = $query->paginate(15);
+        $products = $query->paginate(config('setting.per_page'));
         $categories = Category::get();
 
         return view('products.index', compact('products', 'categories'));
@@ -49,17 +40,12 @@ class ProductController extends Controller
     { 
         try {
             $this->productService->create($request->validated());
-            return redirect()->route('products.index')->with('success', 'Product created successfully!');
+            return redirect()->route('products.index')->with('success', __('main.store_success', ['model' => class_basename(Product::class)]));
         } catch (\Exception $e) {
-            return back()->withInput()->with('error', 'Error creating product: ' . $e->getMessage());
+            return back()->withInput()->with('error', __('main.error_storing', ['model' => class_basename(Product::class), 'reason' => $e->getMessage()]));
         }
     }
 
-    public function show(Product $product)
-    {
-        $product->load('category', 'inventoryLogs.user');
-        return view('products.show', compact('product'));
-    }
 
     public function edit(Product $product)
     {
@@ -71,9 +57,9 @@ class ProductController extends Controller
     {
         try {
             $this->productService->update($product, $request->validated());
-            return redirect()->route('products.index')->with('success', 'Product updated successfully!');
+            return redirect()->route('products.index')->with('success', __('main.update_success', ['model' => class_basename(Product::class)]));
         } catch (\Exception $e) {
-            return back()->withInput()->with('error', 'Error updating product: ' . $e->getMessage());
+            return back()->withInput()->with('error', __('main.error_updating', ['model' => class_basename(Product::class), 'reason' => $e->getMessage()]));
         }
     }
 
@@ -81,11 +67,13 @@ class ProductController extends Controller
     {
         try {
             $this->productService->delete($product);
-            return redirect()->route('products.index')->with('success', 'Product deleted successfully!');
+            return redirect()->route('products.index')->with('success', __('main.delete_success', ['model' => class_basename(Product::class)]));
         } catch (\Exception $e) {
-            return back()->with('error', 'Error deleting product: ' . $e->getMessage());
+            return back()->with('error', __('main.error_occurred'));
         }
+        
     }
+    
 
 
     

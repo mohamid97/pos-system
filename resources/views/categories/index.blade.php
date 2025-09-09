@@ -10,7 +10,24 @@
     </a>
 </div>
 
-
+<div class="card mb-3">
+    <div class="card-body">
+        <form action="{{ route('categories.index') }}" method="GET">
+            <div class="input-group">
+                <input type="text" name="search" class="form-control" placeholder="Search categories..." 
+                       value="{{ request('search') }}">
+                <button type="submit" class="btn btn-outline-secondary">
+                    <i class="fas fa-search"></i>
+                </button>
+                @if(request('search'))
+                    <a href="{{ route('categories.index') }}" class="btn btn-outline-danger">
+                        <i class="fas fa-times"></i>
+                    </a>
+                @endif
+            </div>
+        </form>
+    </div>
+</div>
 
 <div class="card">
     <div class="card-body p-0">
@@ -66,4 +83,10 @@
         </table>
     </div>
 </div>
+
+@if($categories->hasPages())
+<div class="mt-3">
+    <x-pagination :paginator="$categories" :showInfo="true" />
+</div>
+@endif
 @endsection

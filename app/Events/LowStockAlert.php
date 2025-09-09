@@ -2,16 +2,21 @@
 
 namespace App\Events;
 
+
 use App\Models\Product;
-use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Broadcasting\InteractsWithSockets;
 
 class LowStockAlert
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
-
-    public function __construct(public Product $product)
+    
+    public Product $product;
+    
+    public function __construct(Product $product)
     {
+         $this->product = $product;
     }
+    
 }

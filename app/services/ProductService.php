@@ -6,7 +6,7 @@ use App\Models\Category;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\UploadedFile;
 use  App\Traits\HandelImages;
-
+use Illuminate\Contracts\Database\Eloquent\Builder;
 
 class ProductService
 {
@@ -41,10 +41,6 @@ class ProductService
 
     public function delete(Product $product): bool
     {
-        if ($product->image) {
-            Storage::disk('public')->delete($product->image);
-        }
-
         return $product->delete();
     }
 
@@ -69,12 +65,35 @@ class ProductService
                            ->orWhere('sku', 'like', "%{$query}%")
                            ->orWhere('barcode', 'like', "%{$query}%");
                      })
-                     ->get();
+                     ->get(); 
     }
 
     private function chekActive(array $data): bool
     {
         return isset($data['is_active']) ? 1 : 0;
+    }
+
+
+    public function applyFilter(Builder $query, $filters): Builder{
+        if(isset($filters['search']) && $filters['search'] !== ''){
+            $query = $this->applySearch($query , $filters['search']);
+        }
+        if(isset($filters['category']) && $filters['category'] !== ''){
+            $query->where('category_id' , $filters['category']);
+        }
+        if(isset($filters['status']) && $filters['status'] !== ''){
+            $query->where('is_active' , $filters['status']);
+        }
+
+        return $query;
+
+    }
+
+    private function applySearch(Builder $query , string $search): Builder{
+        return $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                  ->orWhere('sku', 'like', "%{$search}%");
+            });
     }
 
 

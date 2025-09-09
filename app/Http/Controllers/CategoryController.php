@@ -16,9 +16,14 @@ class CategoryController extends Controller
         $this->service = $service;
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $categories = Category::latest()->paginate(10);
+
+        $query = Category::query();
+        if ($request->has('search')) {
+            $query = $this->service->applySearch($query , $request->get('search'));
+        }
+        $categories = $query->latest()->paginate(config('setting.per_page'));
         return view('categories.index', compact('categories'));
     }
 
@@ -29,12 +34,11 @@ class CategoryController extends Controller
 
     public function store(CategoryRequest $request)
     {
-
         try{
             $this->service->create($request->validated());
-            return redirect()->route('categories.index')->with('success', 'Category created successfully.');
+            return redirect()->route('categories.index')->with('success', __('main.store_success', ['model' => class_basename(Category::class)]));
         }catch (\Exception $e) {
-            return back()->withInput()->with('error', 'Error creating product: ' . $e->getMessage());
+            return back()->withInput()->with('error', __('main.error_storing' , ['model'=>class_basename(Category::class) , 'reason'=>$e->getMessage()] ) );
         }
 
     }
@@ -49,9 +53,9 @@ class CategoryController extends Controller
      
        try{
             $this->service->update($category, $request->validated());
-            return redirect()->route('categories.index')->with('success', 'Category updated successfully.');
+            return redirect()->route('categories.index')->with('success', __('main.update_success', ['model' => class_basename(Category::class)]));
         }catch (\Exception $e) {
-            return back()->withInput()->with('error', 'Error Updating product: ' . $e->getMessage());
+            return back()->withInput()->with('error', __('main.error_updating' , ['model'=>class_basename(Category::class) , 'reason'=>$e->getMessage()] ));
         }
 
     }
@@ -59,7 +63,7 @@ class CategoryController extends Controller
     public function destroy(Category $category)
     {
         $this->service->delete($category);
-        return redirect()->route('categories.index')->with('success', 'Category deleted successfully.');
+        return redirect()->route('categories.index')->with('success', __('main.delete_success', ['model' => class_basename(Category::class)]));
     }
 
     

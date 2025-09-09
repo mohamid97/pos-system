@@ -13,107 +13,11 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="{{ asset('assets/css/paginate.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/css/layout.css') }}" rel="stylesheet">
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     
-    <style>
-        .sidebar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            height: 100vh;
-            width: 250px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            transition: all 0.3s;
-            z-index: 1000;
-        }
-        
-        .sidebar .nav-link {
-            color: rgba(255, 255, 255, 0.8);
-            padding: 15px 20px;
-            transition: all 0.3s;
-        }
-        
-        .sidebar .nav-link:hover,
-        .sidebar .nav-link.active {
-            color: #fff;
-            background: rgba(255, 255, 255, 0.1);
-        }
-        
-        .main-content {
-            margin-left: 250px;
-            min-height: 100vh;
-            background: #f8f9fa;
-        }
-        
-        .navbar-brand {
-            color: white !important;
-            font-weight: bold;
-            font-size: 1.5rem;
-        }
-        
-        .card {
-            border: none;
-            border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
-            transition: transform 0.3s ease;
-        }
-        
-        .card:hover {
-            transform: translateY(-2px);
-        }
-        
-        .btn-primary {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border: none;
-            border-radius: 25px;
-        }
-        
-        .stats-card {
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-            color: white;
-            border-radius: 20px;
-            padding: 25px;
-        }
-        
-        .stats-card.blue {
-            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-        }
-        
-        .stats-card.green {
-            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
-        }
-        
-        .stats-card.orange {
-            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
-        }
-        
-        .table thead th {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-        }
-        
-        .pos-product-card {
-            border: none;
-            border-radius: 15px;
-            transition: all 0.3s ease;
-            cursor: pointer;
-            height: 100%;
-        }
-        
-        .pos-product-card:hover {
-            transform: scale(1.02);
-        }
-        
-        .cart-item {
-            border-radius: 10px;
-            margin-bottom: 10px;
-            padding: 15px;
-            background: white;
-            border-left: 4px solid #667eea;
-        }
-    </style>
     
     @stack('styles')
 </head>
@@ -207,12 +111,36 @@
 
             @yield('content')
         </div>
+
+
+        <footer class="bg-light border-top py-3 mt-auto">
+            <div class="container text-center">
+                <p class="mb-1">
+                    Designed & Developed by <strong>
+                        <a href="https://www.linkedin.com/in/mohamed-hamed-b5b1b724b/" target="_blank"> Mohamed Hamed </a></strong>
+                </p>
+                <div class="d-flex justify-content-center gap-3">
+                    <a href="mailto:muhmdhamed757@gmail.com" class="text-decoration-none text-dark">
+                        <i class="fas fa-envelope"></i> Email
+                    </a>
+                    <a href="tel:+201029288339" class="text-decoration-none text-dark">
+                        <i class="fas fa-phone"></i> +201029288339
+                    </a>
+                    <a href="https://github.com/mohamid9" target="_blank" class="text-decoration-none text-dark">
+                        <i class="fab fa-github"></i> GitHub
+                    </a>
+                    <a href="https://www.linkedin.com/in/mohamed-hamed-b5b1b724b/" target="_blank" class="text-decoration-none text-dark">
+                        <i class="fab fa-linkedin"></i> LinkedIn
+                    </a>
+                </div>
+            </div>
+        </footer>
     </main>
 
     <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ asset('assets/js/bundle.min.js') }}"></script>
     <!-- jQuery -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="{{ asset('assets/js/jquery.min.js') }}"></script>
     
     @stack('scripts')
 </body>

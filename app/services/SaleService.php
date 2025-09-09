@@ -56,9 +56,9 @@ class SaleService
                     "Sale #{$sale->sale_number}"
                 );
 
-                // Check for low stock
                 $product = \App\Models\Product::find($item['product_id']);
                 if ($product->isLowStock()) {
+                   
                     event(new LowStockAlert($product));
                 }
             }

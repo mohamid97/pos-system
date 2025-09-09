@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\PosRequest;
 use App\Models\Product;
 use App\Models\Customer;
 use App\Models\Category;
@@ -23,8 +24,8 @@ class PosController extends Controller
     {
         $categories = Category::where('is_active', true)->with('activeProducts')->get();
         $customers = Customer::all();
-
         return view('pos.index', compact('categories', 'customers'));
+        
     }
 
 
@@ -39,20 +40,8 @@ class PosController extends Controller
         ]);
     }
 
-    public function processSale(Request $request): JsonResponse
+    public function processSale(PosRequest $request): JsonResponse
     {
-        $request->validate([
-            'items' => 'required|array|min:1',
-            'items.*.product_id' => 'required|exists:products,id',
-            'items.*.quantity' => 'required|integer|min:1',
-            'items.*.unit_price' => 'required|numeric|min:0',
-            'items.*.total_price' => 'required|numeric|min:0',
-            'subtotal' => 'required|numeric|min:0',
-            'total_amount' => 'required|numeric|min:0',
-            'paid_amount' => 'required|numeric|min:0',
-            'payment_method' => 'required|in:cash,card,bank_transfer',
-            'customer_id' => 'nullable|exists:customers,id',
-        ]);
 
         try {
             $sale = $this->saleService->processSale($request->all());
