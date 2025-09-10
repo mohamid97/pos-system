@@ -61,11 +61,11 @@ class PosController extends Controller
     }
 
 
-    public function receipt($saleId)
-    {
-        $sale = \App\Models\Sale::with(['items.product', 'customer', 'user'])->findOrFail($saleId);
-        return view('pos.receipt', compact('sale'));
-    }
+    // public function receipt($saleId)
+    // {
+    //     $sale = \App\Models\Sale::with(['items.product', 'customer', 'user'])->findOrFail($saleId);
+    //     return view('pos.receipt', compact('sale'));
+    // }
 
     
 

@@ -12,7 +12,8 @@
             </a>
         </div>
 
-        <!-- Sale Information Card -->
+        <div id="sale-details">
+                    <!-- Sale Information Card -->
         <div class="card mb-4">
             <div class="card-header">
                 <h5 class="card-title mb-0">Sale Information</h5>
@@ -37,6 +38,7 @@
                 </div>
             </div>
         </div>
+
 
         <!-- Sale Items Card -->
         <div class="card mb-4">
@@ -125,6 +127,9 @@
                 </div>
             </div>
         </div>
+        
+        </div>
+
 
         <!-- Action Buttons -->
         <div class="d-flex justify-content-between align-items-center">
@@ -143,31 +148,67 @@
                 <a href="{{ route('sales.index') }}" class="btn btn-secondary">
                     <i class="fas fa-list me-1"></i>Back to Sales List
                 </a>
-                <button onclick="window.print()" class="btn btn-primary">
-                    <i class="fas fa-print me-1"></i>Print Receipt
+                <button onclick="printDetails('sale-details')" class="btn btn-primary">
+                    <i class="fas fa-print me-1"></i>Print 
+                </button>
+                <button onclick="printReceipt({{ $sale }})" class="btn btn-success no-print">
+                 <i class="fas fa-receipt me-1"></i> Print Receipt
                 </button>
             </div>
         </div>
     </div>
 </div>
+<div id="receipt" class="print-only">
+    <h3>Receipt</h3>
+    <p>Customer: John Doe</p>
+    <p>Product: Example Item</p>
+    <p>Price: $100</p>
+</div>
 
-<!-- Print Styles -->
-<style>
-    @media print {
-        .btn, .card-header, .d-flex.justify-content-between {
-            display: none !important;
-        }
-        .card {
-            border: none !important;
-            box-shadow: none !important;
-        }
-        body {
-            padding: 20px;
-            font-size: 12px;
-        }
-        .table th, .table td {
-            padding: 4px 8px;
-        }
-    }
-</style>
 @endsection
+
+@push('scripts')
+<script>
+function printDetails(divId) {
+    let content = document.getElementById(divId).innerHTML;
+    let printWindow = window.open('', '', 'width=800,height=600');
+    printWindow.document.write(`
+        <html>
+            <head>
+                <title>Sales Details</title>
+                <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+            </head>
+            <body onload="window.print(); window.close();">
+                ${content}
+            </body>
+        </html>
+    `);
+    printWindow.document.close();
+}
+
+
+
+function printReceipt(sale) {
+    console.log(sale);
+    let receiptContent = `
+        <div>
+            <h3>${sale.sale_number}</h3>
+            <p>Customer: ${sale.customer ? sale.customer.name : 'Walk-in Customer'}</p>
+            <p>Product: ${sale.items[0].product.name}</p>
+            <p>Payment Method: ${sale.payment_method}</p>
+            <p>Total Amount: $${sale.total_amount.toFixed(2)}</p>
+            <p>Date: ${new Date(sale.completed_at).toLocaleString()}</p>
+        </div> 
+    `;
+    let originalContent = document.body.innerHTML;
+
+    document.body.innerHTML = receiptContent;
+    window.print();
+    document.body.innerHTML = originalContent;
+    location.reload();
+}
+
+
+
+</script>
+@endpush
