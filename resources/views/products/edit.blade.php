@@ -7,9 +7,12 @@
     <div class="col-lg-8 mx-auto">
         <div class="d-flex justify-content-between align-items-center mb-3">
             <h1 class="h4"><i class="fas fa-edit me-2"></i>Edit Product</h1>
-            <a href="{{ route('products.index') }}" class="btn btn-secondary">
-                <i class="fas fa-arrow-left me-1"></i>Back to Products
-            </a>
+            @can('view_product')
+                <a href="{{ route('products.index') }}" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left me-1"></i>Back
+                </a>
+            @endcan
+
         </div>
         <div class="card">
             <div class="card-body">

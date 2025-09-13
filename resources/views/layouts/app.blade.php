@@ -63,6 +63,22 @@
                     <i class="fas fa-chart-line me-2"></i>Sales
                 </a>
             </li>
+
+
+         <li class="nav-item">
+            <a class="nav-link {{ request()->routeIs('users.*') ? 'active' : '' }}" href="{{ route('users.index') }}">
+                <i class="fas fa-users me-2"></i>Users
+            </a>
+        </li>
+
+            
+        <li class="nav-item">
+            <a class="nav-link {{ request()->routeIs('roles.*') ? 'active' : '' }}" href="{{ route('roles.index') }}">
+                <i class="fas fa-users-cog me-2"></i>Roles
+            </a>
+        </li>
+
+
         </ul>
     </nav>
 

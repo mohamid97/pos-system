@@ -8,6 +8,7 @@ use App\Services\InventoryService;
 
 class DashboardController extends Controller
 {
+    
     protected $reportService;
     protected $inventoryService;
         public function __construct(ReportService $reportService, InventoryService $inventoryService)

@@ -5,9 +5,13 @@
 @section('content')
 <div class="d-flex justify-content-between align-items-center mb-3">
     <h1 class="h4"><i class="fas fa-tags me-2"></i>Categories</h1>
-    <a href="{{ route('categories.create') }}" class="btn btn-primary">
-        <i class="fas fa-plus me-1"></i>Add Category
-    </a>
+
+    @can('create_category')
+        <a href="{{ route('categories.create') }}" class="btn btn-primary">
+            <i class="fas fa-plus me-1"></i>Add Category
+        </a>
+    @endcan
+
 </div>
 
 <div class="card mb-3">
@@ -61,17 +65,24 @@
                         @endif
                     </td>
                     <td class="text-end">
-                        <a href="{{ route('categories.edit', $category) }}" class="btn btn-sm btn-warning">
-                            <i class="fas fa-edit"></i>
-                        </a>
-                        <form action="{{ route('categories.destroy', $category) }}" method="POST" class="d-inline"
-                              onsubmit="return confirm('Delete this category?');">
-                            @csrf
-                            @method('DELETE')
-                            <button class="btn btn-sm btn-danger">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </form>
+                        @can('edit_category')
+                            <a href="{{ route('categories.edit', $category) }}" class="btn btn-sm btn-warning">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                        @endcan
+
+                        @can('delete_category')
+                            <form action="{{ route('categories.destroy', $category) }}" method="POST" class="d-inline"
+                                onsubmit="return confirm('Delete this category?');">
+                                @csrf
+                                @method('DELETE')
+                                <button class="btn btn-sm btn-danger">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </form>
+                        @endcan
+
+
                     </td>
                 </tr>
                 @empty

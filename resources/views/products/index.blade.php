@@ -5,9 +5,12 @@
 @section('content')
 <div class="d-flex justify-content-between align-items-center mb-3">
     <h1 class="h4"><i class="fas fa-box me-2"></i>Products</h1>
-    <a href="{{ route('products.create') }}" class="btn btn-primary">
-        <i class="fas fa-plus me-1"></i>Add Product
-    </a>
+    @can('create_product')
+        <a href="{{ route('products.create') }}" class="btn btn-primary">
+            <i class="fas fa-plus me-1"></i>Add Product
+        </a> 
+    @endcan
+
 </div>
 
 
@@ -104,17 +107,24 @@
                             @endif
                         </td>
                         <td class="text-end">
-                            <a href="{{ route('products.edit', $product) }}" class="btn btn-sm btn-warning">
-                                <i class="fas fa-edit"></i>
-                            </a>
-                            <form action="{{ route('products.destroy', $product) }}" method="POST" class="d-inline"
-                                  onsubmit="return confirm('Are you sure you want to delete this product?');">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-sm btn-danger">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </form>
+                            @can('edit_product')
+                                <a href="{{ route('products.edit', $product) }}" class="btn btn-sm btn-warning">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                            @endcan
+
+                            @can('delete_product')
+
+                                <form action="{{ route('products.destroy', $product) }}" method="POST" class="d-inline"
+                                    onsubmit="return confirm('Are you sure you want to delete this product?');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-sm btn-danger">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </form>
+                            @endcan
+
                         </td>
                     </tr>
                     @empty
